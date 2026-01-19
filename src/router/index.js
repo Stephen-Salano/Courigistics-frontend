@@ -41,6 +41,12 @@ const router = createRouter({
           meta: { requiresAuth: true }
         },
         {
+          path: 'messages',
+          name: 'dashboard-messages',
+          component: () => import('@/views/DashboardMessages.vue'),
+          meta: { requiresAuth: true }
+        },
+        {
           path: 'vehicles',
           name: 'dashboard-vehicles',
           component: () => import('@/views/DashboardVehicles.vue'),
@@ -70,4 +76,3 @@ router.beforeEach((to, from, next) => {
 })
 
 export default router
-

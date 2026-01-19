@@ -1,52 +1,142 @@
 <template>
-  <aside class="w-64 bg-base-200 min-h-screen">
-    <ul class="menu p-4 w-full">
-      <li>
-        <router-link to="/dashboard" class="flex items-center gap-3 hover:bg-green-100 hover:text-green-700 transition-colors">
-          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" stroke-linejoin="round" stroke-linecap="round" stroke-width="2" fill="none" stroke="currentColor" class="w-5 h-5">
-            <path d="M15 21v-8a1 1 0 0 0-1-1h-4a1 1 0 0 0-1 1v8"></path>
-            <path d="M3 10a2 2 0 0 1 .709-1.528l7-5.999a2 2 0 0 1 2.582 0l7 5.999A2 2 0 0 1 21 10v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path>
-          </svg>
-          <span>Home</span>
-        </router-link>
-      </li>
-      <li>
-        <router-link to="/dashboard/deliveries" class="flex items-center gap-3 hover:bg-green-100 hover:text-green-700 transition-colors">
-          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" stroke-linejoin="round" stroke-linecap="round" stroke-width="2" fill="none" stroke="currentColor" class="w-5 h-5">
-            <path d="M16 3h5v5"></path>
-            <path d="M8 3H3v5"></path>
-            <path d="M12 22v-8.3a4 4 0 0 0-1.172-2.872L3 3"></path>
-            <path d="m15 9 6-6"></path>
-            <path d="M21 3v5h-5"></path>
-            <path d="M21 12v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h7"></path>
-          </svg>
-          <span>Deliveries</span>
-        </router-link>
-      </li>
-      <li>
-        <router-link to="/dashboard/vehicles" class="flex items-center gap-3 hover:bg-green-100 hover:text-green-700 transition-colors">
-          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" stroke-linejoin="round" stroke-linecap="round" stroke-width="2" fill="none" stroke="currentColor" class="w-5 h-5">
-            <path d="M5 17H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v10a2 2 0 0 1-2 2h-1"></path>
-            <path d="M12 15a3 3 0 1 1 6 0 3 3 0 1 1-6 0"></path>
-            <path d="M12 15v4"></path>
-            <path d="M18 15v4"></path>
-          </svg>
-          <span>Vehicle Management</span>
-        </router-link>
-      </li>
-      <li>
-        <router-link to="/dashboard/settings" class="flex items-center gap-3 hover:bg-green-100 hover:text-green-700 transition-colors">
-          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" stroke-linejoin="round" stroke-linecap="round" stroke-width="2" fill="none" stroke="currentColor" class="w-5 h-5">
-            <path d="M12.22 2h-.44a2 2 0 0 0-2 2v.18a2 2 0 0 1-1 1.73l-.43.25a2 2 0 0 1-2 0l-.15-.08a2 2 0 0 0-2.73.73l-.22.38a2 2 0 0 0 .73 2.73l.15.1a2 2 0 0 1 1 1.72v.51a2 2 0 0 1-1 1.74l-.15.09a2 2 0 0 0-.73 2.73l.22.38a2 2 0 0 0 2.73.73l.15-.08a2 2 0 0 1 2 0l.43.25a2 2 0 0 1 1 1.73V20a2 2 0 0 0 2 2h.44a2 2 0 0 0 2-2v-.18a2 2 0 0 1 1-1.73l.43-.25a2 2 0 0 1 2 0l.15.08a2 2 0 0 0 2.73-.73l.22-.39a2 2 0 0 0-.73-2.73l-.15-.08a2 2 0 0 1-1-1.74v-.5a2 2 0 0 1 1-1.74l.15-.09a2 2 0 0 0 .73-2.73l-.22-.38a2 2 0 0 0-2.73-.73l-.15.08a2 2 0 0 1-2 0l-.43-.25a2 2 0 0 1-1-1.73V4a2 2 0 0 0-2-2z"></path>
-            <circle cx="12" cy="12" r="3"></circle>
-          </svg>
-          <span>Profile & Settings</span>
-        </router-link>
-      </li>
-    </ul>
+  <aside 
+    class="bg-white border-r border-dashed border-gray-300 h-full transition-all duration-300 ease-in-out flex flex-col"
+    :class="layoutStore.miniSidebar ? 'w-20' : 'w-72'"
+  >
+    <!-- Logo Section -->
+    <div class="h-[74px] flex items-center px-6 border-b border-dashed border-gray-200">
+      <router-link to="/dashboard" class="flex items-center gap-2 overflow-hidden whitespace-nowrap">
+        <div class="w-8 h-8 bg-green-600 rounded-lg flex items-center justify-center shrink-0">
+          <span class="text-white font-bold text-lg">C</span>
+        </div>
+        <span 
+          class="text-xl font-bold text-gray-900 transition-opacity duration-300"
+          :class="layoutStore.miniSidebar ? 'opacity-0 w-0' : 'opacity-100'"
+        >
+          Courigistics
+        </span>
+      </router-link>
+    </div>
+
+    <!-- Navigation Items -->
+    <div class="flex-1 overflow-y-auto py-4 px-3 custom-scrollbar">
+      <ul class="space-y-1">
+        <template v-for="(item, index) in sidebarItems" :key="index">
+          <!-- Header -->
+          <li v-if="item.header" class="px-3 mt-4 mb-2">
+            <span 
+              class="text-xs font-bold text-gray-400 uppercase tracking-wider transition-opacity duration-300"
+              :class="layoutStore.miniSidebar ? 'hidden' : 'block'"
+            >
+              {{ item.header }}
+            </span>
+            <div v-if="layoutStore.miniSidebar" class="h-px bg-gray-200 my-2"></div>
+          </li>
+
+          <!-- Menu Item -->
+          <li v-else>
+            <!-- Regular Link -->
+            <router-link
+              v-if="!item.action"
+              :to="item.to"
+              class="flex items-center gap-3 px-3 py-2.5 rounded-lg transition-all duration-200 group relative"
+              :class="[
+                isActive(item.to) ? 'bg-green-50 text-green-600 font-medium' : 'text-gray-600 hover:bg-gray-50 hover:text-green-600'
+              ]"
+            >
+              <!-- Icon -->
+              <span class="shrink-0">
+                <img :src="item.icon" class="w-5 h-5" alt="icon" />
+              </span>
+
+              <!-- Text -->
+              <span 
+                class="whitespace-nowrap transition-all duration-300 overflow-hidden"
+                :class="layoutStore.miniSidebar ? 'w-0 opacity-0' : 'w-auto opacity-100'"
+              >
+                {{ item.title }}
+              </span>
+
+              <!-- Tooltip for Mini Sidebar -->
+              <div 
+                v-if="layoutStore.miniSidebar"
+                class="absolute left-full ml-2 px-2 py-1 bg-gray-800 text-white text-xs rounded opacity-0 group-hover:opacity-100 pointer-events-none whitespace-nowrap z-50"
+              >
+                {{ item.title }}
+              </div>
+            </router-link>
+
+            <!-- Action Button (e.g. Logout) -->
+            <button
+              v-else
+              @click="handleAction(item.action)"
+              class="w-full flex items-center gap-3 px-3 py-2.5 rounded-lg transition-all duration-200 group relative text-gray-600 hover:bg-red-50 hover:text-red-600"
+            >
+              <!-- Icon -->
+              <span class="shrink-0">
+                <img :src="item.icon" class="w-5 h-5" alt="icon" />
+              </span>
+
+              <!-- Text -->
+              <span
+                class="whitespace-nowrap transition-all duration-300 overflow-hidden"
+                :class="layoutStore.miniSidebar ? 'w-0 opacity-0' : 'w-auto opacity-100'"
+              >
+                {{ item.title }}
+              </span>
+
+              <!-- Tooltip for Mini Sidebar -->
+              <div
+                v-if="layoutStore.miniSidebar"
+                class="absolute left-full ml-2 px-2 py-1 bg-gray-800 text-white text-xs rounded opacity-0 group-hover:opacity-100 pointer-events-none whitespace-nowrap z-50"
+              >
+                {{ item.title }}
+              </div>
+            </button>
+          </li>
+        </template>
+      </ul>
+    </div>
   </aside>
 </template>
 
 <script setup>
-// Sidebar component
+import { useLayoutStore } from '@/stores/layout'
+import sidebarItems from './sidebarItems'
+import { useRoute, useRouter } from 'vue-router'
+import { useAuthStore } from '@/stores/auth'
+
+const layoutStore = useLayoutStore()
+const route = useRoute()
+const router = useRouter()
+const authStore = useAuthStore()
+
+const isActive = (path) => {
+  // Exact match for dashboard home
+  if (path === '/dashboard') {
+    return route.path === '/dashboard'
+  }
+  // Prefix match for other routes, but exclude exact dashboard match if path is just /dashboard
+  return route.path.startsWith(path)
+}
+
+const handleAction = (action) => {
+  if (action === 'logout') {
+    authStore.logout()
+    router.push('/login')
+  }
+}
 </script>
+
+<style scoped>
+.custom-scrollbar::-webkit-scrollbar {
+  width: 4px;
+}
+.custom-scrollbar::-webkit-scrollbar-track {
+  background: transparent;
+}
+.custom-scrollbar::-webkit-scrollbar-thumb {
+  background: #e5e7eb;
+  border-radius: 4px;
+}
+</style>

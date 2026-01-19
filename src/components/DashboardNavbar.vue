@@ -1,14 +1,40 @@
 <template>
-  <nav class="navbar bg-base-100 shadow-sm border-b border-gray-200">
+  <nav class="navbar sticky top-0 z-30 bg-white/80 backdrop-blur-md border-b border-dashed border-gray-200 h-[74px] px-4 sm:px-6">
     <div class="flex-1">
-      <label for="dashboard-drawer" class="btn btn-square btn-ghost lg:hidden">
-        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" stroke-linejoin="round" stroke-linecap="round" stroke-width="2" fill="none" stroke="currentColor" class="w-6 h-6">
-          <path d="M4 6h16M4 12h16M4 18h16"></path>
+      <!-- Sidebar Toggle Button -->
+      <button 
+        @click="toggleSidebar" 
+        class="btn btn-square btn-ghost btn-sm text-gray-500 hover:bg-green-50 hover:text-green-600 mr-2"
+      >
+        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6">
+          <path stroke-linecap="round" stroke-linejoin="round" d="M3.75 6.75h16.5M3.75 12h16.5m-16.5 5.25h16.5" />
         </svg>
-      </label>
-      <a class="btn btn-ghost text-xl font-bold text-green-600">Courigistics</a>
+      </button>
+      
+      <!-- Search (Hidden on small screens) -->
+      <div class="hidden md:flex items-center relative w-64">
+        <span class="absolute left-3 text-gray-400">
+          <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-4 h-4">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M21 21l-5.197-5.197m0 0A7.5 7.5 0 105.196 5.196a7.5 7.5 0 0010.607 10.607z" />
+          </svg>
+        </span>
+        <input 
+          type="text" 
+          placeholder="Ctrl + k" 
+          class="input input-bordered input-sm w-full pl-9 bg-transparent border-gray-300 focus:border-green-500 focus:outline-none rounded-md"
+        />
+      </div>
     </div>
-    <div class="flex-none gap-4">
+
+    <div class="flex items-center gap-4">
+      <!-- Notifications -->
+      <button class="btn btn-ghost btn-circle">
+        <div class="indicator">
+          <img src="@/assets/images/icons/Notifications.svg" class="h-5 w-5" alt="Notifications" />
+          <span class="badge badge-xs badge-primary indicator-item bg-green-600 border-none"></span>
+        </div>
+      </button>
+
       <!-- Shopping Cart Dropdown -->
       <div class="dropdown dropdown-end">
         <div tabindex="0" role="button" class="btn btn-ghost btn-circle">
@@ -60,9 +86,18 @@
 import { computed } from 'vue'
 import { useRouter } from 'vue-router'
 import { useAuthStore } from '@/stores/auth'
+import { useLayoutStore } from '@/stores/layout'
 
 const router = useRouter()
 const authStore = useAuthStore()
+const layoutStore = useLayoutStore()
+
+const toggleSidebar = () => {
+  // If mobile, toggle open state
+  // If desktop, toggle mini state
+  if (window.innerWidth < 1024) layoutStore.sidebarOpen = !layoutStore.sidebarOpen
+  else layoutStore.miniSidebar = !layoutStore.miniSidebar
+}
 
 const user = computed(() => authStore.user)
 const userInitials = computed(() => {
