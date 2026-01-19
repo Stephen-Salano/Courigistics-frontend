@@ -83,11 +83,11 @@
     </div>
 
     <!-- Toast Notification -->
-    <div v-if="toast.show" class="toast toast-top toast-end">
-      <div :class="['alert', toast.type === 'success' ? 'alert-success' : 'alert-error']">
-        <span>{{ toast.message }}</span>
-      </div>
-    </div>
+    <ToastNotification 
+      :show="toast.show" 
+      :message="toast.message" 
+      :type="toast.type" 
+    />
   </div>
 </template>
 
@@ -95,6 +95,7 @@
 import { ref, reactive, onMounted } from 'vue'
 import { useRouter } from 'vue-router'
 import { useAuthStore } from '@/stores/auth'
+import ToastNotification from '@/components/ToastNotification.vue'
 import api from '@/services/api'
 
 const router = useRouter()
